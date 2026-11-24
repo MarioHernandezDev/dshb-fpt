@@ -1,0 +1,20 @@
+services:
+  dev:
+    build:
+      context: .
+      args:
+        UID: ${UID:-1000}
+    working_dir: /app
+    volumes:
+      - .:/app
+      - gomod:/go/pkg          # caché de módulos (se borra con down -v)
+      - gocache:/home/dev/.cache
+    ports:
+      - "127.0.0.1:8787:8080"  # solo accesible desde tu propio PC
+    environment:
+      - DATA_DIR=/app/data
+      - ADDR=0.0.0.0:8080
+    command: go run .
+volumes:
+  gomod:
+  gocache:
